@@ -1,0 +1,14 @@
+﻿<Window x:Class="CSharp.Lab02.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:CSharpLab02"
+        xmlns:lab01="clr-namespace:CSharp.Lab02"
+        xmlns:dateWindow="clr-namespace:CSharp.Lab02.Views"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="590" Width="270" MinHeight="580" MinWidth="270" WindowStartupLocation="CenterScreen">
+    <Grid Background="#FF074043" OpacityMask="#FFE2948B">
+        <dateWindow:DatePickerView Loaded="DatePickerView_Loaded" Background="#FFB9A9E4" Foreground="#FF074043"></dateWindow:DatePickerView>
+    </Grid>
+</Window>
