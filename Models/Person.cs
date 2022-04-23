@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CSharp.Lab02.Tools.Exceptions;
+using System;
+using System.Text.RegularExpressions;
 
 namespace CSharp.Lab02.Models
 {
@@ -10,27 +12,32 @@ namespace CSharp.Lab02.Models
         private string _mail;
         private DateTime? _birthDate;
 
-        public Person(string name, string surname, string email, DateTime? birthdate = null)
+        public Person(string name, string surname, string email, DateTime? birthDate = null)
         {
-            _name = name;
-            _surname = surname;
-            _mail = email;
-            if (birthdate != null)
-                Birthdate = birthdate.Value;
+            _name = name.Trim();
+            _surname = surname.Trim();
+            _mail = email.Trim();
+            if (birthDate != null)
+                BirthDate = birthDate.Value;
+            NameIsCorrect();
+            SurnameIsCorrect();
+            EmailIsCorrect();
+            BirthDateIsCorrect();
+
         }
 
         public Person(string name = " ", string surname = " ", string email = " ")
         {
-            _name = name;
-            _surname = surname;
-            _mail = email;
+            _name = name.Trim();
+            _surname = surname.Trim();
+            _mail = email.Trim();
         }
 
-        public Person(string name, string surname, DateTime? birthdate)
+        public Person(string name, string surname, DateTime? birthDate)
         {
-            _name = name;
-            _surname = surname;
-            _birthDate = birthdate;
+            _name = name.Trim();
+            _surname = surname.Trim();
+            _birthDate = birthDate;
         }
 
 
@@ -52,7 +59,7 @@ namespace CSharp.Lab02.Models
             set { _mail = value; }
         }
 
-        public DateTime? Birthdate
+        public DateTime? BirthDate
         {
             get { return _birthDate; }
             set { _birthDate = value; }
@@ -62,12 +69,12 @@ namespace CSharp.Lab02.Models
         public string SunSign { get { return DefineSunSign(); } }
         public string ChineseSign { get { return DefineChineseSign(); } }
         public bool IsAduld { get { return Age >= 18; } }
-        public bool HaveBirthday { get { return DateTime.Now.DayOfYear == _birthDate.Value.DayOfYear; } }
+        public bool HaveBirthday { get { return DateTime.Now.DayOfYear == BirthDate.Value.DayOfYear; } }
 
         private int DefineAge()
         {
-            int age = DateTime.Now.Year - _birthDate.Value.Year;
-            if (DateTime.Now.DayOfYear < _birthDate.Value.DayOfYear)
+            int age = DateTime.Now.Year - BirthDate.Value.Year;
+            if (DateTime.Now.DayOfYear < BirthDate.Value.DayOfYear)
             {
                 age -= 1;
             }
@@ -78,8 +85,8 @@ namespace CSharp.Lab02.Models
         private string DefineSunSign()
         {
             string zodiac = "";
-            int month = _birthDate.Value.Month;
-            int day = _birthDate.Value.Day;
+            int month = BirthDate.Value.Month;
+            int day = BirthDate.Value.Day;
             if ((day >= 21 && month == 3) || (day <= 19 && month == 4))
                 zodiac = "Aries";
             if ((day >= 23 && month == 9) || (day <= 23 && month == 10))
@@ -109,10 +116,48 @@ namespace CSharp.Lab02.Models
 
         private string DefineChineseSign()
         {
-            int zodiac = (_birthDate.Value.Year - 4) % 12;
+            int zodiac = (BirthDate.Value.Year - 4) % 12;
             string[] animals = { "Rat", "Ox", "Tiger", "Rabbit", "Dragon", "Snake", "Horse", "Goat", "Monkey", "Rooster", "Dog", "Pig" };
             string chineseZodiac = animals[zodiac];
             return chineseZodiac;
+        }
+
+        private void EmailIsCorrect()
+        {
+            if (!Regex.IsMatch(Mail, @"^([\w\.\-]+)@([\w\-]+)((\.(\w){2,3})+)$", RegexOptions.IgnoreCase))
+            {
+                throw new IncorrectEmailException(Mail);
+            }
+        }
+
+        private void NameIsCorrect()
+        {
+            if (!Regex.IsMatch(Name, @"^[a-zA-Z]+$"))
+            {
+                throw new IncorrectNameException(Name);
+            }
+
+        }
+        private void SurnameIsCorrect()
+        {
+            if (!Regex.IsMatch(Surname, @"^[a-zA-Z]+$"))
+            {
+                throw new IncorrectSurnameException(Surname);
+            }
+        }
+
+
+        private void BirthDateIsCorrect()
+        {
+            if (Age < 0)
+            {
+                throw new UnbornPersonException(BirthDate.Value);
+            }
+
+            if (Age > 135)
+            {
+                throw new OveragedPersonException(BirthDate.Value);
+            }
         }
 
     }

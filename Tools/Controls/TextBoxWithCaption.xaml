@@ -12,7 +12,7 @@
             <ColumnDefinition Width="Auto"></ColumnDefinition>
             <ColumnDefinition Width="*"></ColumnDefinition>
         </Grid.ColumnDefinitions>
-        <TextBlock Name="TBoxCaption" Grid.Column="0" Grid.Row="0"  HorizontalAlignment="Left" VerticalAlignment="Center" Width="50" Margin="6,9,5,2" Text="Caption" FontSize="15" Foreground="White"/>
-        <TextBox Name="TBoxValue" Grid.Column="1" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="25" Margin="10,8,10,0" Text="{Binding ElementName=textBoxWithCaption, Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" Foreground="#FF074043"/>
+        <TextBlock Name="TBoxCaption" Grid.Column="0" Grid.Row="0"  HorizontalAlignment="Left" VerticalAlignment="Top" Width="61" Margin="6,12,0,0" Text="Caption" FontSize="15" Foreground="White" Grid.ColumnSpan="2"/>
+        <TextBox Name="TBoxValue" Grid.Column="1" VerticalAlignment="Top" Height="25" Margin="72,8,10,0" Text="{Binding ElementName=textBoxWithCaption, Path=Text, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" FontSize="15" Foreground="#FF074043"/>
     </Grid>
 </UserControl>

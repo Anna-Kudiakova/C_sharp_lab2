@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using CSharp.Lab02.Models;
 using CSharp.Lab02.Tools;
+using CSharp.Lab02.Tools.Exceptions;
 
 namespace CSharp.Lab02.ViewModels
 {
@@ -62,11 +63,11 @@ namespace CSharp.Lab02.ViewModels
         {
             get
             {
-                return _person.Birthdate;
+                return _person.BirthDate;
             }
             set
             {
-                _person.Birthdate = value;
+                _person.BirthDate = value;
             }
         }
 
@@ -142,11 +143,33 @@ namespace CSharp.Lab02.ViewModels
 
         private async void Proceed()
         {
-            _person = new Person(Name, Surname, Mail, BirthDate);
-
-            if (_person.Age < 0 || _person.Age > 135)
+            try
             {
-                MessageBox.Show("Entered date is incorrect");
+                _person = new Person(Name, Surname, Mail, BirthDate);
+            }
+            catch (IncorrectNameException e)
+            {
+                MessageBox.Show(e.Message);
+                return;
+            }
+            catch (IncorrectSurnameException e)
+            {
+                MessageBox.Show(e.Message);
+                return;
+            }
+            catch (IncorrectEmailException e)
+            {
+                MessageBox.Show(e.Message);
+                return;
+            }
+            catch (UnbornPersonException e)
+            {
+                MessageBox.Show(e.Message);
+                return;
+            }
+            catch (OveragedPersonException e)
+            {
+                MessageBox.Show(e.Message);
                 return;
             }
 
